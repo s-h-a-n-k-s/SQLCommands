@@ -1,2 +1,32 @@
 select name from products where pid in (select pid from sales group by pid having count(*) = (select max(count(*)) from sales group by pid));
 
+create or replace procedure firstprocedure
+  2  is
+  3  begin
+  4  dbms_output.put_line('Hello');
+  5  dbms_output.put_line('my friends');
+  6  end;
+  7* /
+
+create or replace procedure addition
+  2  is
+  3  a number(3);
+  4  b number(3);
+  5  c number(3);
+  6  begin
+  7  a := 15;
+  8  b := 20;
+  9  c := a + b;
+ 10  dbms_output.put_line('The result');
+ 11  dbms_output.put_line(c);
+ 12  end;
+ 13* /
+
+create or replace procedure record (r number, n char, m number)
+  2  is
+  3  begin
+  4  insert into school values(r, n);
+  5  end;
+  6* /
+
+

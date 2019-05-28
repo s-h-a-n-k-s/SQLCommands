@@ -1,0 +1,32 @@
+select description from subcategory where sid = (select sid from products where pid in (select pid from sales group by pid having count(*) = (select max(count(*)) from sales group by pid)));
+
+select description from subcategory where sid in (select sid from products where pid in (select pid from sales group by pid having count(*) = (select max(count(*)) from sales group by pid)));
+
+
+select description from category where cid in (select cid from subcategory where sid in (select sid from products where pid in (select pid from sales group by pid having count(*) = (select max(count(*)) from sales group by pid))));
+
+
+select name from products where pid in (select pid from sales group by pid having count(*) = (select products.sid, count(*) from sales, products where sales.pid = products.pid group by sid);
+
+
+insert into bank values((select upper(substr(actype, 1, 1)) || upper(substr(city, 1, 1)) || lpad(nvl(max(substr(accno, 3, 3)) +1, 1), 3, 0) from bank where substr(accno, 1, 1) = upper(substr(acctype, 1, 1))), name, postcode);
+ 
+insert into bank values((select upper(substr(actype, 1, 1)) || upper(substr(City, 1, 1)) || lpad(nvl(max(substr(accno, 3, 3)) +1, 1), 3, 0) from bank where substr(accno, 1, 1) = upper(substr(ActType,1,1))),Name,City);
+
+create or replace procedure tesco_entry(category char, subcategory char)
+  2  is
+  3  categoryID number(3);
+  4  subcategoryID number(3);
+  5  begin
+  6  select nvl(max(cid), 0) into categoryID from category where description = category;
+  7  if categoryID=0 then
+  8  select nvl(max(cid), 0) into categoryID from category;
+  9  categoryID := categoryID + 1;
+ 10  end if;
+ 11  select nvl(max(cid), 0) into subcategoryID from subcategory;
+ 12  insert into category values(categoryID, category);
+ 13  insert into subcategory values(subcategoryID, subcategory);
+ 14* dbms_output.put_line('Inserted');
+ 15  end;
+ 16  /
+

@@ -1,0 +1,68 @@
+create or replace procedure tesco_entry(category char, subcategory char)
+  2  is
+  3  categoryID number(3);
+  4  subcategoryID number(3);
+  5  begin
+  6  select nvl(max(cid), 0) into categoryID from category where description = category;
+  7  if categoryID=0 then
+  8  select nvl(max(cid), 0) +1 into categoryID from category;
+  9  insert into category values(categoryID, category);
+ 10  end if;
+ 11  select nvl(max(sid), 0) +1 into subcategoryID from subcategory;
+ 12  insert into subcategory values(categoryID, subcategoryID, subcategory);
+ 13  dbms_output.put_line('Inserted');
+ 14  end;
+ 15* /
+
+
+create or replace procedure tesco_entry(category char, subcategory char)
+  2  is
+  3  categoryID number(3);
+  4  subcategoryID number(3);
+  5  begin
+  6  select nvl(max(cid), 0) into categoryID from category where description = category;
+  7  if categoryID=0 then
+  8  select nvl(max(cid), 0) +1 into categoryID from category;
+  9  insert into category values(categoryID, category);
+ 10  end if;
+ 11  select nvl(max(sid), 0) +10 into subcategoryID from subcategory where cid = categoryID;
+ 12  insert into subcategory values(categoryID, subcategoryID, subcategory);
+ 13  dbms_output.put_line('Inserted');
+ 14  end;
+ 15* /
+
+
+create or replace function tax(s number) return number
+  2  is
+  3  result number(7,2);
+  4  begin
+  5  result := s * 21 / 100;
+  6  return result;
+  7  end;
+  8* /
+
+
+select user from dual;
+
+select 567 * 492 from dual;
+
+select sysdate from dual;
+
+create or replace trigger tablebackup before delete on school for each row
+  2  begin
+  3  insert into school_backup (regno, name) values(:old.regno, :old.name);
+  4  end;
+  5* /
+
+create or replace trigger insert_school 
+  2  before insert on school for each row
+  3  begin
+  4  if :new.marks = 58 or :new.marks = 59 then
+  5  :new.marks := 60;
+  6  end if;
+  7  :new.name:=upper(:new.name);
+  8  end;
+  9* /
+
+create view view1 as select name, marks from school where marks > 15;
+
